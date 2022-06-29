@@ -1,0 +1,36 @@
+CREATE SCHEMA IF NOT EXISTS MovieRecommendations;
+USE MovieRecommendations;
+
+DROP TABLE IF EXISTS Rate;
+
+CREATE TABLE Rate
+(   
+RateId INT AUTO_INCREMENT,
+UserId INT,
+MovieId INT,
+Rating DECIMAL,
+DateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT pk_Rate_rateId PRIMARY KEY(rateId),
+CONSTRAINT fk_Rate_MovieId FOREIGN KEY(MovieId)
+REFERENCES Movies(MovieId)
+ON UPDATE CASCADE ON DELETE SET NULL,
+CONSTRAINT fk_Rate_UserId FOREIGN KEY(UserId)
+REFERENCES Users(UserId)
+ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+-- SET sql_mode = 'STRICT_TRANS_TABLES';
+-- SET sql_mode = 'STRICT_ALL_TABLES';
+
+# Insert data for TABLE CreditCards from file
+LOAD DATA LOCAL INFILE '/Users/shi/NEU/5200/Project/data/ratings_small.csv' INTO TABLE Rate
+  FIELDS TERMINATED BY ','
+  OPTIONALLY ENCLOSED BY '"'
+  ESCAPED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES
+  (UserId, MovieId, Rating, DateTime)
+  SET RateId = NULL;
+
+
+
