@@ -22,6 +22,7 @@ public class RateDao {
         return instance;
     }
 
+    // Single pattern: instantiatino is limited to one object
     public Rate create(Rate rate) throws SQLException {
         String insertRate = "INSERT INTO Rate(UserId, MovieId, Rating, DateTime) VALUES(?,?,?,?);";
         Connection connection = null;
